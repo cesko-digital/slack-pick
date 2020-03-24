@@ -15,11 +15,13 @@ function elem(elementName, attributes) {
 
 function renderMetadata(msg) {
   const div = elem("div", { class: "metadata" });
+  const date = new Date(msg.timestamp);
   div.innerHTML = `
     Posted
     in <a href="${msg.channel.permalink}">#${msg.channel.name}</a>
-    by ${msg.user.username},
-    <a href="${msg.permalink}">open in Slack</a>
+    by ${msg.user.username}
+    on ${date.toLocaleDateString("cs-CZ")} (${date.toLocaleTimeString("cs-CZ")})
+    / <a href="${msg.permalink}">open in Slack</a>
     .`;
   return div;
 }
