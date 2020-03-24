@@ -1,5 +1,6 @@
 async function getMessageData() {
-  const dataUrl = "https://data.cesko.digital/slack-pick/1/messages.json";
+  const dataUrl =
+    "https://data-cesko-digital.s3.eu-central-1.amazonaws.com/slack-pick/1/messages.json";
   const response = await fetch(dataUrl);
   return await response.json();
 }
