@@ -22,7 +22,9 @@ function renderText(text) {
   text = text.replace(
     /&lt;(https?:.+?)(\|(.+?))?&gt;/gi,
     (_, url, __, label) => {
-      return `<a href="${url}">${label || url}</a>`;
+      // Help browser breaking the URL using zero-width spaces after slashes
+      const text = label != null ? label : url.replace(/\//g, "/\u200B");
+      return `<a href="${url}">${text}</a>`;
     }
   );
 
