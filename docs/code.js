@@ -13,6 +13,22 @@ function elem(elementName, attributes) {
   return elem;
 }
 
+// This is probably quite wrong
+function renderText(text) {
+  text = text.replace(/&/g, "&amp;");
+  text = text.replace(/</g, "&lt;");
+  text = text.replace(/>/g, "&gt;");
+
+  text = text.replace(
+    /&lt;(https?:.+?)(\|(.+?))?&gt;/gi,
+    (_, url, __, label) => {
+      return `<a href="${url}">${label || url}</a>`;
+    }
+  );
+
+  return text;
+}
+
 function renderMetadata(msg) {
   const div = elem("div", { class: "metadata" });
   const date = new Date(msg.timestamp);
@@ -42,7 +58,7 @@ function renderStats(data) {
 function renderMessage(msg) {
   const div = elem("div", { class: "message" });
   const p = elem("p");
-  p.innerText = msg.text;
+  p.innerHTML = renderText(msg.text);
   div.appendChild(p);
   div.appendChild(renderMetadata(msg));
   return div;
