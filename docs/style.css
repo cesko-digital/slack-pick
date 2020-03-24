@@ -5,3 +5,22 @@ body {
   max-width: 1000px;
   margin: auto;
 }
+
+.message {
+  margin-bottom: 2ex;
+}
+
+.message p {
+  margin-bottom: 1ex;
+}
+
+.metadata {
+  font-size: small;
+}
+
+.footer {
+  font-size: small;
+  border-top: 1px solid #ddd;
+  margin-top: 40px;
+  padding-top: 20px;
+}
