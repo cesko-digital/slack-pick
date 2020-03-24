@@ -1,0 +1,30 @@
+name: Deploy
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build & Run
+        run: |
+          yarn install
+          SLACK_USER_TOKEN=${{ secrets.SLACK_USER_TOKEN }} yarn start
+      - name: Prepare for upload
+        run: |
+          mkdir dist
+          mv messages.json dist
+      - name: Upload artifacts
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read
+        env:
+          AWS_S3_BUCKET: data-cesko-digital
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET }}
+          AWS_REGION: "eu-central-1"
+          SOURCE_DIR: "dist"
+          DEST_DIR: "slack-pick/1"
