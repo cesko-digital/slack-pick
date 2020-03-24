@@ -24,6 +24,17 @@ function renderMetadata(msg) {
   return div;
 }
 
+function renderStats(data) {
+  const div = elem("div", { class: "stats" });
+  const date = new Date(data.timestamp);
+  div.innerText = `${
+    data.messages.length
+  } messages total, last data update ${date.toLocaleDateString(
+    "cs-CZ"
+  )} at ${date.toLocaleTimeString("cs-CZ")}.`;
+  return div;
+}
+
 function renderMessage(msg) {
   const div = elem("div", { class: "message" });
   const p = elem("p");
@@ -47,6 +58,7 @@ async function main() {
   try {
     const data = await getMessageData();
     mountPoint.replaceChild(renderData(data), mountPoint.firstChild);
+    mountPoint.appendChild(renderStats(data));
   } catch (err) {
     mountPoint.innerText = "Error loading data, please see the console.";
     console.error(err);

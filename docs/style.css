@@ -18,6 +18,11 @@ body {
   font-size: small;
 }
 
+.stats {
+  font-size: small;
+  margin-top: 20px;
+}
+
 .footer {
   font-size: small;
   border-top: 1px solid #ddd;
