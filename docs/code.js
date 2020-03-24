@@ -29,14 +29,13 @@ function renderMetadata(msg) {
 function renderStats(data) {
   const div = elem("div", { class: "footer" });
   const date = new Date(data.timestamp);
-  div.innerHTML = `${
-    data.messages.length
-  } messages total, last data update ${date.toLocaleDateString(
-    "cs-CZ"
-  )} at ${date.toLocaleTimeString("cs-CZ")}.<br>
-  <a href="https://github.com/cesko-digital/slack-pick/">
-    Bug reports and feature requests welcome!
-  </a>
+  div.innerHTML = `
+    ${data.messages.length} messages total,
+    last data update ${date.toLocaleDateString("cs-CZ")}
+    at ${date.toLocaleTimeString("cs-CZ")}.<br>
+    <a href="https://github.com/cesko-digital/slack-pick/">
+      Bug reports and feature requests welcome!
+    </a>
   `;
   return div;
 }
