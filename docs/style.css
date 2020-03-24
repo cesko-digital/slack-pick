@@ -7,6 +7,8 @@ body {
 }
 
 .message {
+  padding-bottom: 2ex;
+  border-bottom: 1px dotted #ddd;
   margin-bottom: 2ex;
 }
 
@@ -20,7 +22,6 @@ body {
 
 .footer {
   font-size: small;
-  border-top: 1px solid #ddd;
   margin-top: 40px;
   padding-top: 20px;
 }
