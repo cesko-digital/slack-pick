@@ -15,9 +15,12 @@ function elem(elementName, attributes) {
 
 // This is probably quite wrong
 function renderText(text) {
+  // Basic sanitization. Is this enough?
   text = text.replace(/&/g, "&amp;");
   text = text.replace(/</g, "&lt;");
   text = text.replace(/>/g, "&gt;");
+
+  text = text.replace(/\n/g, "<br>");
 
   text = text.replace(
     /&lt;(https?:.+?)(\|(.+?))?&gt;/gi,
