@@ -32,16 +32,33 @@ function renderText(text) {
   return text;
 }
 
+function getAllChannelNames(data) {
+  return [...new Set(data.messages.map(msg => msg.channel.name))];
+}
+
+function renderChannelToggle(data) {
+  const select = elem("select");
+  for (const channel of getAllChannelNames(data)) {
+    const option = elem("option", { value: channel });
+    option.innerText = "#" + channel;
+    select.appendChild(option);
+  }
+  select.onchange = () => {
+    displayChannel(data, select.value);
+  };
+  return select;
+}
+
 function renderMetadata(msg) {
   const div = elem("div", { class: "metadata" });
   const date = new Date(msg.timestamp);
   div.innerHTML = `
     Posted
-    in <a href="${msg.channel.permalink}">#${msg.channel.name}</a>
     by ${msg.user.username}
-    on ${date.toLocaleDateString("cs-CZ")} (${date.toLocaleTimeString("cs-CZ")})
-    / <a href="${msg.permalink}">open in Slack</a>
-    .`;
+    on ${date.toLocaleDateString("cs-CZ")}
+    (${date.toLocaleTimeString("cs-CZ")}).
+    <a href="${msg.permalink}">Open in Slack</a>
+    `;
   return div;
 }
 
@@ -67,12 +84,13 @@ function renderMessage(msg) {
   return div;
 }
 
-function renderData(data) {
-  const div = document.createElement("div");
-  for (const msg of data.messages) {
-    div.appendChild(renderMessage(msg));
+function displayChannel(data, name) {
+  const container = document.getElementById("output");
+  container.innerText = "";
+  const matches = data.messages.filter(msg => msg.channel.name === name);
+  for (const msg of matches) {
+    container.appendChild(renderMessage(msg));
   }
-  return div;
 }
 
 async function main() {
@@ -80,8 +98,10 @@ async function main() {
   mountPoint.innerText = "Loading data…";
   try {
     const data = await getMessageData();
-    mountPoint.replaceChild(renderData(data), mountPoint.firstChild);
+    mountPoint.replaceChild(renderChannelToggle(data), mountPoint.firstChild);
+    mountPoint.appendChild(elem("div", { id: "output" }));
     mountPoint.appendChild(renderStats(data));
+    displayChannel(data, getAllChannelNames(data)[0]);
   } catch (err) {
     mountPoint.innerText = "Error loading data, please see the console.";
     console.error(err);
