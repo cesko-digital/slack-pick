@@ -1,3 +1,4 @@
+/** Return message data as a parsed object */
 async function getMessageData() {
   const dataUrl =
     "https://data-cesko-digital.s3.eu-central-1.amazonaws.com/slack-pick/1/messages.json";
@@ -5,6 +6,7 @@ async function getMessageData() {
   return await response.json();
 }
 
+/** Create element, optionally setting attributes from the second argument */
 function elem(elementName, attributes) {
   const elem = document.createElement(elementName);
   for (const [key, val] of Object.entries(attributes || {})) {
@@ -13,7 +15,11 @@ function elem(elementName, attributes) {
   return elem;
 }
 
-// This is probably quite wrong
+/**
+ * Turn Slack message text into HTML
+ *
+ * This is probably quite wrong, especially security-wise.
+ */
 function renderText(text) {
   // Basic sanitization. Is this enough?
   text = text.replace(/&/g, "&amp;");
@@ -32,10 +38,12 @@ function renderText(text) {
   return text;
 }
 
+/** Return an array with all channel names present in data */
 function getAllChannelNames(data) {
   return [...new Set(data.messages.map(msg => msg.channel.name))];
 }
 
+/** Render the channel selector */
 function renderChannelToggle(data) {
   const select = elem("select");
   for (const channel of getAllChannelNames(data)) {
@@ -49,6 +57,7 @@ function renderChannelToggle(data) {
   return select;
 }
 
+/** Render message metadata: author, timestamp, etc. */
 function renderMetadata(msg) {
   const div = elem("div", { class: "metadata" });
   const date = new Date(msg.timestamp);
@@ -62,6 +71,7 @@ function renderMetadata(msg) {
   return div;
 }
 
+/** Render overall stats: message count etc. */
 function renderStats(data) {
   const div = elem("div", { class: "footer" });
   const date = new Date(data.timestamp);
@@ -75,6 +85,7 @@ function renderStats(data) {
   return div;
 }
 
+/** Render single message */
 function renderMessage(msg) {
   const div = elem("div", { class: "message" });
   const p = elem("p");
@@ -84,6 +95,7 @@ function renderMessage(msg) {
   return div;
 }
 
+/** Display content for given channel */
 function displayChannel(data, name) {
   const container = document.getElementById("output");
   container.innerText = "";
