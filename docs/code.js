@@ -38,6 +38,13 @@ function renderText(text) {
 
   text = text.replace(/\n/g, "<br>");
 
+  // Markup channel mentions, <#CK8UTNFNK|marketing>
+  text = text.replace(
+    /&lt;#(\w+?)\|([\w-]+?)&gt;/gi,
+    "<a href='https://cesko-digital.slack.com/archives/$1'>#$2</a>"
+  );
+
+  // Markup links
   text = text.replace(
     /&lt;(https?:.+?)(\|(.+?))?&gt;/gi,
     (_, url, __, label) => {
